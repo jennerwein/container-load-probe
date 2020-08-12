@@ -42,16 +42,31 @@ def trigger(x):
 tick = 0           # App time in ticks. Start with 0.
 durationTick = 1   # Duration of a tick in seconds.
 
+# Variable NR_PROC: Number of processes running parallel
 try:
     NR_PROC = int(os.getenv('NR_PROC'))
 except:
     NR_PROC = multiprocessing.cpu_count()
 
+# Variable REP_CYCLE: After how many ticks the load should be repeated 
+# Default: REP_CYCLE=10 (1 tick = 1 second).
+try:
+    REP_CYCLE = int(os.getenv('REP_CYCLE'))
+except:
+    REP_CYCLE=10
+
+# Variable LOAD_DUR: How many seconds of CPU load. how many tick load the load should be repeated 
+# Default: LOAD_DUR=2
+try:
+    LOAD_DUR = int(os.getenv('LOAD_DUR'))
+except:
+    LOAD_DUR=2
+
+
 while True: # Run continuously
 ## for x in range(1): # Run once
-    if trigger(10):    # Every 10 ticks
-        parallelWorker(NR_PROC,2)
-
+    if trigger(REP_CYCLE):    # Every 10 ticks
+        parallelWorker(NR_PROC,LOAD_DUR)
     #
     ##########################################################################
     # Increase the tick by 1 and sleep a durationTick
