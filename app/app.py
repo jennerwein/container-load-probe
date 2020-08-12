@@ -5,21 +5,40 @@ import multiprocessing
 from multiprocessing import Process
 
 def worker(duration):
-    '''Just do something in the given time duration.'''
+    '''Just do something in the given time duration.
+    Duration in seconds.                            '''
     start=time.time()
     while (time.time()-start) < duration:
         x=1
-        for i in range(1000): x=x+1
+        for i in range(100): x=x+1
 
 def do_worker(q,duration):
     '''Put the worker in the queue.'''
     q.put(worker(duration))
 
-def parallelWorker(nr_processes,duration):
+def halfworker(duration):
+    '''Just do something in the given time duration.
+    Use CPU half time
+    Duration in seconds.                            '''
+    start=time.time()
+    while (time.time()-start) < duration:
+        worker(0.05)
+        time.sleep(0.05)
+
+def do_halfworker(q,duration):
+    '''Put the worker in the queue.'''
+    q.put(halfworker(duration))
+
+
+def parallelWorker(nr_processes,duration,HALF=False):
     q = multiprocessing.Queue()
     jobs = []
     for i in range(nr_processes):
-        p = Process(target=do_worker, args=(q,duration))
+        if HALF:
+            p = Process(target=do_halfworker, args=(q,duration))
+        else:
+            p = Process(target=do_worker, args=(q,duration))
+
         # target: the function to be executed by process p
         # args: the arguments to be passed to the target function
         jobs.append(p)
@@ -62,18 +81,22 @@ try:
 except:
     LOAD_DUR=2
 
-# Variable LOAD_DUR: How many seconds of CPU load. how many tick load the load should be repeated 
-# Default: LOAD_DUR=2
+# Variable HALF: If True, then use CPU only half time (= simulate 50% CPU).
+# Default: 'normal'
 try:
-    MODE = os.getenv('MODE')
+    HALF = os.getenv('HALF')
 except:
-    MODE = 'normal'
+    HALF = False
+
+# With variable MODE you can set special effects.
+# Default: None
+MODE = os.getenv('MODE')
 
 while True: # Run continuously
 ## for x in range(1): # Run once
     if trigger(REP_CYCLE):    # Every REP_CYCLE ticks
-        if MODE == 'normal':
-            parallelWorker(NR_PROC,LOAD_DUR)
+        if MODE == None:
+            parallelWorker(NR_PROC,LOAD_DUR,HALF)
         else:
             for i in range(multiprocessing.cpu_count()):
                 parallelWorker(1,i+1)
