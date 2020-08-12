@@ -62,11 +62,21 @@ try:
 except:
     LOAD_DUR=2
 
+# Variable LOAD_DUR: How many seconds of CPU load. how many tick load the load should be repeated 
+# Default: LOAD_DUR=2
+try:
+    MODE = os.getenv('MODE')
+except:
+    MODE = 'normal'
 
 while True: # Run continuously
 ## for x in range(1): # Run once
-    if trigger(REP_CYCLE):    # Every 10 ticks
-        parallelWorker(NR_PROC,LOAD_DUR)
+    if trigger(REP_CYCLE):    # Every REP_CYCLE ticks
+        if MODE == 'normal':
+            parallelWorker(NR_PROC,LOAD_DUR)
+        else:
+            for i in range(multiprocessing.cpu_count()):
+                parallelWorker(1,i+1)
     #
     ##########################################################################
     # Increase the tick by 1 and sleep a durationTick

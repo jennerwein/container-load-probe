@@ -1,4 +1,4 @@
-# container-load-probe: A docker container for testing CPU load.
+# A docker container for testing CPU load
 
 This container will periodically generate CPU load. It can be used e.g. for testing a docker monitoring tool. Configure the container by environment variables:
 
