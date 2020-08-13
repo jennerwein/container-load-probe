@@ -2,10 +2,10 @@
 
 This container will periodically generate CPU load. It can be used e.g. for testing a docker monitoring tool. Configure the container by environment variables:
 
-* `NR_PROC`: Number of processes running parallel.  
-* `REP_CYCLE`: After how many ticks (=seconds) the CPU load should be repeated? Default: `REP_CYCLE=10`.
-* `LOAD_DUR`: How many seconds of CPU load? Default: `LOAD_DUR=2`.
-* `HALF`: If true use only a load with 50% CPU. Default: `HALF=False`
+* `NR_PROC`: Number of processes running parallel. Default: Half of the available CPUs, at least one.
+* `REP_CYCLE`: After how many ticks (=seconds) the CPU load should be repeated? Default: `REP_CYCLE=60`.
+* `LOAD_DUR`: How many seconds of CPU load? Default: `LOAD_DUR=10`.
+* `HALF`: If true use only a load with 50% CPU. Default: `HALF=True`
 
 Examples:
 

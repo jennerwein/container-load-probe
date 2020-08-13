@@ -4,6 +4,8 @@ import time
 import multiprocessing
 from multiprocessing import Process
 
+import defaults
+
 def worker(duration):
     '''Just do something in the given time duration.
     Duration in seconds.                            '''
@@ -65,28 +67,27 @@ durationTick = 1   # Duration of a tick in seconds.
 try:
     NR_PROC = int(os.getenv('NR_PROC'))
 except:
-    NR_PROC = multiprocessing.cpu_count()
+    NR_PROC = defaults.NR_PROC
 
 # Variable REP_CYCLE: After how many ticks the load should be repeated 
-# Default: REP_CYCLE=10 (1 tick = 1 second).
 try:
     REP_CYCLE = int(os.getenv('REP_CYCLE'))
 except:
-    REP_CYCLE=10
+    REP_CYCLE = defaults.REP_CYCLE
 
 # Variable LOAD_DUR: How many seconds of CPU load. how many tick load the load should be repeated 
-# Default: LOAD_DUR=2
 try:
     LOAD_DUR = int(os.getenv('LOAD_DUR'))
 except:
-    LOAD_DUR=2
+    LOAD_DUR = defaults.LOAD_DUR
 
 # Variable HALF: If True, then use CPU only half time (= simulate 50% CPU).
-# Default: 'normal'
 try:
     HALF = os.getenv('HALF')
+    if HALF == None:
+        HALF = defaults.HALF
 except:
-    HALF = False
+    HALF = defaults.HALF
 
 # With variable MODE you can set special effects.
 # Default: None
