@@ -10,10 +10,10 @@ This container will periodically generate CPU load. It can be used e.g. for test
 Examples:
 
     docker run -e NR_PROC=3 jennerwein/container-load-probe
-Every 10 seconds 2 seconds (= standard config) full load with `NR_PROC=3` parallel processes.
+Every `60` seconds `10` seconds (= standard config) half load with `NR_PROC=3` parallel processes.
 
-    docker run -e REP_CYCLE=10 -e LOAD_DUR=4 -e NR_PROC=1 jennerwein/container-load-probe`  
-Every `10` seconds `4` seconds full load with `1` (parallel) process.
+    docker run -e REP_CYCLE=3600 -e LOAD_DUR=60 -e HALF=False -e NR_PROC=1 jennerwein/container-load-probe`  
+Every hour one minute full load with `1` (parallel) process.
 
-    docker run -e HALF=True jennerwein/container-load-probe
-Every 10 seconds 2 seconds half load using all CPUs in parallel processes.
+    docker run -e HALF=False jennerwein/container-load-probe
+Every minute `10` seconds full load using all CPUs in parallel processes.
